@@ -19,7 +19,7 @@ class DocumentsControllerTest extends SqliteWebTestCase
     public function testDocumentsIndexAsAnonymous()
     {
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
-        $this->assertClientIsRedirectedTo('http://localhost/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedToAuth();
     }
 
     public function testDocumentsIndexAsAdherent()
