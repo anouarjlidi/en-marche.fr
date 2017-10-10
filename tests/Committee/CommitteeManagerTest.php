@@ -214,6 +214,38 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $this->assertEquals(false, $adherent2->getMembershipFor($committee)->isFollower());
     }
 
+    public function testApproveRefuseCommittee()
+    {
+        // Creator of committee
+        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_6_UUID);
+        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
+
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isFollower());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+
+        // Approve committee
+        $this->committeeManager->approveCommittee($committee);
+
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+
+        // Refuse approved committee
+        $this->committeeManager->approveCommittee($committee);
+
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+
+        // Reapprove committee
+        $this->committeeManager->approveCommittee($committee);
+
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+    }
+
     private function getCommitteeMock(string $uuid)
     {
         $mock = $this->createMock(Committee::class);
