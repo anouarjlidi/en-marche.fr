@@ -68,9 +68,13 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         $query = $this
             ->createQueryBuilder('a')
             ->addSelect('pma')
+            ->addSelect('cma')
             ->addSelect('cm')
+            ->addSelect('bm')
             ->leftJoin('a.procurationManagedArea', 'pma')
+            ->leftJoin('a.coordinatorManagedArea', 'cma')
             ->leftJoin('a.memberships', 'cm')
+            ->leftJoin('a.boardMember', 'bm')
             ->where('a.emailAddress = :username')
             ->andWhere('a.status = :status')
             ->setParameter('username', $username)
@@ -347,6 +351,15 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         $qb->andWhere('a != :member');
         $qb->setParameter('member', $excludedMember);
 
+        $qb->leftJoin('a.procurationManagedArea', 'ap');
+        $qb->addSelect('ap');
+        $qb->leftJoin('a.coordinatorManagedArea', 'ac');
+        $qb->addSelect('ac');
+        $qb->leftJoin('a.memberships', 'cm');
+        $qb->addSelect('cm');
+        $qb->innerJoin('bm.roles', 'bmr');
+        $qb->addSelect('bmr');
+
         if ($queryGender = $filter->getQueryGender()) {
             $qb->andWhere('a.gender = :gender');
             $qb->setParameter('gender', $queryGender);
@@ -403,11 +416,6 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         }
 
         if (count($queryRoles = $filter->getQueryRoles())) {
-            $qb
-                ->innerJoin('bm.roles', 'bmr')
-                ->addSelect('bmr')
-            ;
-
             $rolesExpression = $qb->expr()->orX();
 
             foreach ($queryRoles as $key => $role) {
