@@ -21,6 +21,7 @@ use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
+ * @group controller-2
  */
 class CommitteeManagerControllerTest extends MysqlWebTestCase
 {

@@ -12,6 +12,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
+ * @group controller-1
  */
 class ArticleControllerTest extends SqliteWebTestCase
 {

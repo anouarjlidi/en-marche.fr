@@ -11,6 +11,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
+ * @group controller-2
  */
 class ExplainerControllerTest extends SqliteWebTestCase
 {

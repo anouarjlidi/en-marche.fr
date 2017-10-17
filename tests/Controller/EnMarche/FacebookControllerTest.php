@@ -10,6 +10,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional
+ * @group controller-2
  */
 class FacebookControllerTest extends WebTestCase
 {

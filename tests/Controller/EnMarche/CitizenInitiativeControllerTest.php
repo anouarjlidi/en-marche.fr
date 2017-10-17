@@ -23,6 +23,7 @@ use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
+ * @group controller-1
  */
 class CitizenInitiativeControllerTest extends MysqlWebTestCase
 {
